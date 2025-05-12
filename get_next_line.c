@@ -6,7 +6,7 @@
 /*   By: radib <radib@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 15:31:04 by radib             #+#    #+#             */
-/*   Updated: 2025/05/12 12:47:50 by radib            ###   ########.fr       */
+/*   Updated: 2025/05/12 12:52:01 by radib            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	*get_next_line(int fd)
 			buffer[nbr_read] = '\0';
 		if (ft_strrchr_n(buffer))
 		{
-			ptr = ft_strjoin(ft_strrchr_n(buffer), NULL);
+			ptr = ft_strjoin(ptr, ft_strrchr_n(buffer));
 			return (ptr);
 		}
 		else
@@ -68,5 +68,6 @@ int	main(void)
 	int	fd;
 
 	fd = open("fd.txt", O_RDONLY);
+	printf("%s\n", get_next_line(fd));
 	printf("%s\n", get_next_line(fd));
 }
