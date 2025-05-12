@@ -6,7 +6,7 @@
 /*   By: radib <radib@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:01:40 by radib             #+#    #+#             */
-/*   Updated: 2025/05/06 15:32:31 by radib            ###   ########.fr       */
+/*   Updated: 2025/05/12 11:58:52 by radib            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,5 +18,8 @@
 # include <limits.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <fcntl.h>
+
+char	*ft_strjoin(char const *s1, char const *s2);
 
 #endif
