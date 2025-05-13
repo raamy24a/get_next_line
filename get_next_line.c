@@ -6,13 +6,13 @@
 /*   By: radib <radib@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 15:31:04 by radib             #+#    #+#             */
-/*   Updated: 2025/05/13 11:18:54 by radib            ###   ########.fr       */
+/*   Updated: 2025/05/13 11:39:56 by radib            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #ifndef BUFFER_SIZE
-# define BUFFER_SIZE 42
+# define BUFFER_SIZE 2
 
 #endif
 
@@ -86,17 +86,25 @@ char	*ft_strrchr_n(const char *s, char mode)
 char	*get_next_line(int fd)
 {
 	int			nbr_read;
-	char		buffer[BUFFER_SIZE + 1];
+	char		*buffer;
 	static char	*end_buffer;
 	char		*temp;
 
+	buffer = malloc (sizeof(char) * (BUFFER_SIZE + 1));
 	while (!ft_is_strrchr_n(end_buffer, 'b'))
 	{
 		if (!ft_is_strrchr_n(end_buffer, 'b'))
 			nbr_read = read (fd, buffer, BUFFER_SIZE);
-		if (nbr_read == 0 || nbr_read == -1)
+		if ((nbr_read == 0 || nbr_read == -1) && end_buffer == NULL)
 			return (NULL);
+		else if ((nbr_read == 0 || nbr_read == -1) && end_buffer != NULL)
+		{
+			temp = ft_strdup(end_buffer);
+			end_buffer = NULL;
+			return (temp);
+		}
 		end_buffer = ft_strjoin(end_buffer, buffer);
+		buffer = NULL;
 	}
 	temp = ft_strdup(end_buffer);
 	end_buffer = ft_strrchr_n(end_buffer, 'a');
