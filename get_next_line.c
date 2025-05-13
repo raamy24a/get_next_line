@@ -6,7 +6,7 @@
 /*   By: radib <radib@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 15:31:04 by radib             #+#    #+#             */
-/*   Updated: 2025/05/12 16:23:35 by radib            ###   ########.fr       */
+/*   Updated: 2025/05/13 11:18:54 by radib            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,29 @@ char	*ft_strdup(const char *s)
 	return (s_dup);
 }
 
+int	ft_is_strrchr_n(const char *s, char mode)
+{
+	char	*smot;
+	size_t	i;
+
+	if (!s)
+		return (0);
+	smot = (char *)s;
+	i = 0;
+	while (smot[i] != '\n' && smot[i])
+	{
+		i++;
+	}
+	if (smot[i] == '\n' && mode == 'b')
+	{
+		i++;
+		return (1);
+	}
+	else if (smot[i] == '\n' && mode == 'a' && smot[i + 1] != '\0')
+		return (1);
+	return (0);
+}
+
 char	*ft_strrchr_n(const char *s, char mode)
 {
 	char	*smot;
@@ -63,21 +86,21 @@ char	*ft_strrchr_n(const char *s, char mode)
 char	*get_next_line(int fd)
 {
 	int			nbr_read;
-	static char	buffer[BUFFER_SIZE + 1];
-	static char	*ptr;
+	char		buffer[BUFFER_SIZE + 1];
 	static char	*end_buffer;
+	char		*temp;
 
-	while (!ft_strrchr_n(ptr, 'b'))
+	while (!ft_is_strrchr_n(end_buffer, 'b'))
 	{
-		if (!end_buffer)
+		if (!ft_is_strrchr_n(end_buffer, 'b'))
 			nbr_read = read (fd, buffer, BUFFER_SIZE);
 		if (nbr_read == 0 || nbr_read == -1)
 			return (NULL);
-		end_buffer = ft_strjoin (end_buffer, buffer);
-		ptr = (ft_strrchr_n(end_buffer, 'b'));
-		end_buffer = ft_strrchr_n(buffer, 'a');
+		end_buffer = ft_strjoin(end_buffer, buffer);
 	}
-	return (ptr);
+	temp = ft_strdup(end_buffer);
+	end_buffer = ft_strrchr_n(end_buffer, 'a');
+	return (ft_strrchr_n(temp, 'b'));
 }
 
 int	main(void)
@@ -88,10 +111,9 @@ int	main(void)
 
 	i = 0;
 	fd = open("fd.txt", O_RDONLY);
-	while ( i < 3)
+	while ((line = get_next_line(fd))!= NULL)
 	{
-		line = get_next_line(fd);
-		printf("%s\n", line);
+		printf("%s", line);
 		i++;
 	}
 }
