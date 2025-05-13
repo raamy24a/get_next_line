@@ -6,7 +6,7 @@
 /*   By: radib <radib@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 15:31:04 by radib             #+#    #+#             */
-/*   Updated: 2025/05/12 12:52:01 by radib            ###   ########.fr       */
+/*   Updated: 2025/05/12 16:23:35 by radib            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,47 @@
 
 #endif
 
-char	*ft_strrchr_n(const char *s)
+char	*ft_strdup(const char *s)
 {
-	char			*smot;
-	size_t			i;
+	size_t	s_len;
+	char	*s_dup;
+	size_t	i;
 
+	s_len = ft_pstrlen(s);
+	s_dup = malloc(sizeof(char) * s_len + 1);
+	if (!s_dup)
+		return (NULL);
+	i = 0;
+	while (s[i])
+	{
+		s_dup[i] = s[i];
+		i++;
+	}
+	s_dup[i] = '\0';
+	return (s_dup);
+}
+
+char	*ft_strrchr_n(const char *s, char mode)
+{
+	char	*smot;
+	size_t	i;
+
+	if (!s)
+		return (NULL);
 	smot = (char *)s;
 	i = 0;
 	while (smot[i] != '\n' && smot[i])
 	{
 		i++;
 	}
-	if (smot[i] == '\n')
+	if (smot[i] == '\n' && mode == 'b')
 	{
 		i++;
 		smot[i] = '\0';
 		return (smot);
 	}
+	else if (smot[i] == '\n' && mode == 'a' && smot[i + 1] != '\0')
+		return (smot + i + 1);
 	return (NULL);
 }
 
@@ -40,34 +64,34 @@ char	*get_next_line(int fd)
 {
 	int			nbr_read;
 	static char	buffer[BUFFER_SIZE + 1];
-	char		*ptr;
-	int			i;
+	static char	*ptr;
+	static char	*end_buffer;
 
-	i = 0;
-	while (nbr_read != 0)
+	while (!ft_strrchr_n(ptr, 'b'))
 	{
-		nbr_read = read(fd, buffer, BUFFER_SIZE);
-		if (nbr_read == -1 || nbr_read == 0)
+		if (!end_buffer)
+			nbr_read = read (fd, buffer, BUFFER_SIZE);
+		if (nbr_read == 0 || nbr_read == -1)
 			return (NULL);
-		if (nbr_read > 0)
-			buffer[nbr_read] = '\0';
-		if (ft_strrchr_n(buffer))
-		{
-			ptr = ft_strjoin(ptr, ft_strrchr_n(buffer));
-			return (ptr);
-		}
-		else
-			ptr = ft_strjoin(ptr, buffer);
-		i++;
+		end_buffer = ft_strjoin (end_buffer, buffer);
+		ptr = (ft_strrchr_n(end_buffer, 'b'));
+		end_buffer = ft_strrchr_n(buffer, 'a');
 	}
 	return (ptr);
 }
 
 int	main(void)
 {
-	int	fd;
+	int		fd;
+	char	*line;
+	int		i;
 
+	i = 0;
 	fd = open("fd.txt", O_RDONLY);
-	printf("%s\n", get_next_line(fd));
-	printf("%s\n", get_next_line(fd));
+	while ( i < 3)
+	{
+		line = get_next_line(fd);
+		printf("%s\n", line);
+		i++;
+	}
 }
