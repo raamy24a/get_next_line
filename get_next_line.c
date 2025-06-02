@@ -6,7 +6,7 @@
 /*   By: radib <radib@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 15:31:04 by radib             #+#    #+#             */
-/*   Updated: 2025/05/14 17:11:06 by radib            ###   ########.fr       */
+/*   Updated: 2025/06/02 10:35:49 by radib            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,9 @@ char	*read_file(int fd, char *stash)
 		if (nbr_read < 0)
 		{
 			free(buffer);
-			if (stash)
-				free(stash);
-			return (NULL);
+			free(stash);
+			stash = NULL;
+			return (stash);
 		}
 		buffer[nbr_read] = '\0';
 		temp = ft_strjoin(stash, buffer);
@@ -88,9 +88,7 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	stash = read_file(fd, stash);
-	if (!stash)
-		return (NULL);
-	if (stash[0] == '\0')
+	if (!stash || stash[0] == '\0')
 	{
 		free(stash);
 		stash = NULL;
@@ -101,4 +99,15 @@ char	*get_next_line(int fd)
 	free(stash);
 	stash = new_stash;
 	return (line);
+}
+
+int	main(void)
+{
+	// Test these scenarios manually:
+	int fd = open("1char.txt", O_RDONLY);
+	char *line1 = get_next_line(fd);  // Should work
+	char *line2 = get_next_line(fd);  // Should return NULL
+	char *line3 = get_next_line(fd);  // Should return NULL (this might be where it crashes)
+	close(fd);
+	char *line4 = get_next_line(fd);  // Should return NULL (closed fd)
 }

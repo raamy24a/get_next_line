@@ -6,7 +6,7 @@
 /*   By: radib <radib@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 15:31:17 by radib             #+#    #+#             */
-/*   Updated: 2025/05/14 17:04:22 by radib            ###   ########.fr       */
+/*   Updated: 2025/05/31 07:08:38 by radib            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,15 @@ char	*ft_strrchr_b(char *s)
 	size_t	i;
 	size_t	j;
 
-	if (!s)
+	if (!s || s[0] == '\0')
 		return (NULL);
 	i = 0;
-	while (s[i] != '\n' && s[i])
+	while (s[i] && s[i] != '\n')
 		i++;
-	result = malloc(sizeof(char) * (i + 2));
+	if (s[i] == '\n')
+		result = malloc(sizeof(char) * (i + 2));
+	else
+		result = malloc(sizeof(char) * (i + 1));
 	if (!result)
 		return (NULL);
 	j = 0;
@@ -42,10 +45,10 @@ char	*ft_strrchr_a(char *s)
 {
 	size_t	i;
 
-	if (!s)
+	if (!s || s[0] == '\0')
 		return (NULL);
 	i = 0;
-	while (s[i] != '\n' && s[i])
+	while (s[i] && s[i] != '\n')
 		i++;
 	if (s[i] == '\n' && s[i + 1])
 		return (ft_strdup(&s[i + 1]));
