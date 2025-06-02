@@ -6,7 +6,7 @@
 /*   By: radib <radib@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 15:31:04 by radib             #+#    #+#             */
-/*   Updated: 2025/06/02 10:35:49 by radib            ###   ########.fr       */
+/*   Updated: 2025/06/02 11:49:30 by radib            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,13 +101,19 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-int	main(void)
-{
-	// Test these scenarios manually:
-	int fd = open("1char.txt", O_RDONLY);
-	char *line1 = get_next_line(fd);  // Should work
-	char *line2 = get_next_line(fd);  // Should return NULL
-	char *line3 = get_next_line(fd);  // Should return NULL (this might be where it crashes)
-	close(fd);
-	char *line4 = get_next_line(fd);  // Should return NULL (closed fd)
-}
+// int	main(void)
+// {
+// 	char	*line;
+// 	int		fd;
+
+// 	fd = open("1char.txt", O_RDONLY);
+// 	line = get_next_line(fd);
+// 	while (1)
+// 	{
+// 		if (!line)
+// 			break ;
+// 		printf("%s", line);
+// 		free(line);
+// 		line = get_next_line(fd);
+// 	}
+// }
