@@ -6,7 +6,7 @@
 /*   By: radib <radib@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:01:40 by radib             #+#    #+#             */
-/*   Updated: 2025/05/14 16:52:49 by radib            ###   ########.fr       */
+/*   Updated: 2025/06/10 17:15:05 by radib            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <fcntl.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
+#  define BUFFER_SIZE 8370000
 
 # endif
 
@@ -29,8 +29,9 @@ size_t	ft_pstrlen(const char *str);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*get_next_line(int fd);
 char	*ft_strrchr_and_free(char *end_buffer, char mode);
-char	*ft_strrchr_a(char *s);
+char	*ft_strrchr_a(char *s, char *new_stash);
 char	*ft_strrchr_b(char *s);
 char	*ft_strdup(const char *s);
+char	*ft_strcpy(char *dest, char *src);
 
 #endif

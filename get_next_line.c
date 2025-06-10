@@ -6,7 +6,7 @@
 /*   By: radib <radib@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 15:31:04 by radib             #+#    #+#             */
-/*   Updated: 2025/06/02 11:49:30 by radib            ###   ########.fr       */
+/*   Updated: 2025/06/10 16:56:47 by radib            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,27 +52,22 @@ static int	has_newline(const char *s)
 
 char	*read_file(int fd, char *stash)
 {
-	char	*buffer;
+	char	buffer[BUFFER_SIZE + 1];
 	char	*temp;
 	int		nbr_read;
 
 	nbr_read = 1;
 	while (!has_newline(stash) && nbr_read > 0)
 	{
-		buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-		if (!buffer)
-			return (NULL);
 		nbr_read = read(fd, buffer, BUFFER_SIZE);
 		if (nbr_read < 0)
 		{
-			free(buffer);
 			free(stash);
 			stash = NULL;
 			return (stash);
 		}
 		buffer[nbr_read] = '\0';
 		temp = ft_strjoin(stash, buffer);
-		free(buffer);
 		free(stash);
 		stash = temp;
 	}
@@ -81,39 +76,45 @@ char	*read_file(int fd, char *stash)
 
 char	*get_next_line(int fd)
 {
-	static char	*stash;
+	char		*stash;
 	char		*line;
-	char		*new_stash;
+	static char	new_stash[BUFFER_SIZE];
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	stash = read_file(fd, stash);
-	if (!stash || stash[0] == '\0')
+	stash = NULL;
+	if (new_stash[0])
+		stash = ft_strdup(new_stash);
+	if (!has_newline(stash))
 	{
-		free(stash);
-		stash = NULL;
-		return (NULL);
+		if (fd < 0 || BUFFER_SIZE <= 0)
+			return (NULL);
+		stash = read_file(fd, stash);
+		if (!stash || stash[0] == '\0')
+		{
+			free(stash);
+			new_stash[0] = 0;
+			return (NULL);
+		}
 	}
 	line = ft_strrchr_b(stash);
-	new_stash = ft_strrchr_a(stash);
+	ft_strrchr_a(stash, new_stash);
 	free(stash);
-	stash = new_stash;
 	return (line);
 }
 
-// int	main(void)
-// {
-// 	char	*line;
-// 	int		fd;
+int	main(void)
+{
+	char	*line;
+	int		fd;
 
-// 	fd = open("1char.txt", O_RDONLY);
-// 	line = get_next_line(fd);
-// 	while (1)
-// 	{
-// 		if (!line)
-// 			break ;
-// 		printf("%s", line);
-// 		free(line);
-// 		line = get_next_line(fd);
-// 	}
-// }
+	fd = open("mul.txt", O_RDONLY);
+	line = get_next_line(fd);
+	while (1)
+	{
+		if (!line)
+			break ;
+		printf("%s", line);
+		free(line);
+		line = get_next_line(fd);
+	}
+	return (0);
+}
