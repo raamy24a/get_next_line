@@ -6,7 +6,7 @@
 /*   By: radib <radib@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:01:40 by radib             #+#    #+#             */
-/*   Updated: 2025/06/10 17:15:05 by radib            ###   ########.fr       */
+/*   Updated: 2025/06/10 17:35:20 by radib            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,12 @@
 # include <fcntl.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 8370000
+#  define BUFFER_SIZE 42
 
+# endif
+# if BUFFER_SIZE > 8000000
+#  undef BUFFER_SIZE
+#  define BUFFER_SIZE 1000000
 # endif
 
 size_t	ft_pstrlen(const char *str);
