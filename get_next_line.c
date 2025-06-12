@@ -6,7 +6,7 @@
 /*   By: radib <radib@student.s19.be>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 15:31:04 by radib             #+#    #+#             */
-/*   Updated: 2025/06/10 17:16:46 by radib            ###   ########.fr       */
+/*   Updated: 2025/06/12 12:31:29 by radib            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,20 +101,20 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-// int	main(void)
-// {
-// 	char	*line;
-// 	int		fd;
+int	main(void)
+{
+	char	*line;
+	int		fd;
 
-// 	fd = open("mul.txt", O_RDONLY);
-// 	line = get_next_line(fd);
-// 	while (1)
-// 	{
-// 		if (!line)
-// 			break ;
-// 		printf("%s", line);
-// 		free(line);
-// 		line = get_next_line(fd);
-// 	}
-// 	return (0);
-// }
+	fd = open("fd2.txt", O_RDONLY);
+	line = get_next_line(fd);
+	while (1)
+	{
+		if (!line)
+			break ;
+		printf("%s", line);
+		free(line);
+		line = get_next_line(fd);
+	}
+	return (0);
+}
